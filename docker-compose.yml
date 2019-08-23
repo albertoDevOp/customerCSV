@@ -13,10 +13,11 @@ services:
          - type: bind
            source: ./reader
            target: /srv/reader
-      working_dir: /srv
+      working_dir: /srv/reader
       restart: always 
       networks:
          - app
+      command: go run main.go      
   crm:
       image: golang:1.12
       container_name: crm_integrator
@@ -27,10 +28,11 @@ services:
          - type: bind
            source: ./crm
            target: /srv/crm
-      working_dir: /srv
+      working_dir: /srv/crm
       restart: always  
       networks:
          - app  
+      command: go run main.go
   db:
       image: postgres:10.10
       ports:
