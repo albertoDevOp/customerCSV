@@ -19,7 +19,7 @@ Execute the following commands (you must have the port 80 free on the machine):
 ./services.sh build && ./services.sh up
 ```
 
-Run the CSV processor
+## Run the CSV processor
 
 if you are running the app locally 
 
@@ -39,7 +39,7 @@ To restart the application run:
 ./services.sh restart
 ```
 
-##Test
+## Test
 
 ```
 docker exec csv_reader go test -run Test_reader
