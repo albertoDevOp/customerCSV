@@ -1,0 +1,4 @@
+reader/reader
+reader/data/*
+
+!reader/data/.gitkeep 

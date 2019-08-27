@@ -1,12 +1,15 @@
 version: "3.7"
 services:
   reader:
-      image: golang:1.12
+      image: csv_image:latest
       container_name: csv_reader
       init: true
       ports:
          - "5000:5000"
       volumes:
+         - type: bind
+           source: ./csv
+           target: /tmp/reader
          - type: bind
            source: ./reader
            target: /srv/reader
@@ -14,7 +17,7 @@ services:
       restart: always 
       networks:
          - app
-      command: go run main.go      
+      command: ./run.sh
   crm:
       image: golang:1.12
       container_name: crm_integrator
@@ -32,15 +35,21 @@ services:
       command: go run main.go
   db:
       image: postgres:10.10
+      container_name: db
       ports:
          - "8001:5432"
       networks:
          - app
+      volumes:
+         - ./db/schema/:/docker-entrypoint-initdb.d/
+         - ./db/data:/var/lib/postgresql/data
       environment:
          POSTGRES_USER: ${PG_USER}
          POSTGRES_PASSWORD: ${PG_PWD}
+         POSTGRES_DB: ${PG_DB}
   nginx:
       image: nginx:1.16.1
+      container_name: nginx
       volumes:
         - ./nginx.template:/etc/nginx/conf.d/nginx.template
       ports:
